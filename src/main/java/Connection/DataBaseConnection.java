@@ -11,7 +11,7 @@ public class DataBaseConnection {
     private DataBaseConnection(){
         try {
             conexao = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Reserva","postgres", "2005");
-        } catch (SQLException e) {
+        } catch (SQLException ex) {
             throw new RuntimeException("Erro de conexão com banco de dados");
         }
     }
