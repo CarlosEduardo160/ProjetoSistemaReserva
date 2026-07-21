@@ -2,13 +2,18 @@ package Entity;
 
 public class Mesa {
     private Long idMesa;
-    private Integer numeroMesa;
-    private Integer capaciade;
+    private String numeroMesa;
+    private Integer capacidade;
 
-    public Mesa(Long idMesa, Integer numeroMesa, Integer capaciade) {
+    public Mesa(Long idMesa, String numeroMesa, Integer capacidade) {
         this.idMesa = idMesa;
         this.numeroMesa = numeroMesa;
-        this.capaciade = capaciade;
+        this.capacidade = capacidade;
+    }
+
+    public Mesa(String numeroMesa, Integer capacidade) {
+        this.capacidade = capacidade;
+        this.numeroMesa = numeroMesa;
     }
 
     public Long getIdMesa() {
@@ -19,19 +24,28 @@ public class Mesa {
         this.idMesa = idMesa;
     }
 
-    public Integer getNumeroMesa() {
+    public String getNumeroMesa() {
         return numeroMesa;
     }
 
-    public void setNumeroMesa(Integer numeroMesa) {
+    public void setNumeroMesa(String numeroMesa) {
         this.numeroMesa = numeroMesa;
     }
 
-    public Integer getCapaciade() {
-        return capaciade;
+    public Integer getCapacidade() {
+        return capacidade;
     }
 
-    public void setCapaciade(Integer capaciade) {
-        this.capaciade = capaciade;
+    public void setCapacidade(Integer capacidade) {
+        this.capacidade = capacidade;
+    }
+
+    @Override
+    public String toString() {
+        return "Mesa{" +
+                "idMesa=" + idMesa +
+                ", numeroMesa='" + numeroMesa + '\'' +
+                ", capacidade=" + capacidade +
+                '}';
     }
 }

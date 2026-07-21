@@ -1,20 +1,24 @@
 import Entity.Cliente;
+import Entity.Mesa;
 import Service.ClienteService;
+import Service.MesaService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class ReservaUi {
     private ClienteService clienteService;
+    private MesaService mesaService;
 
-    public ReservaUi(ClienteService clienteService) {
+    public ReservaUi(ClienteService clienteService, MesaService mesaService) {
         this.clienteService = clienteService;
+        this.mesaService = mesaService;
     }
 
     Scanner entradaTexto = new Scanner(System.in);
     Scanner entradaNumero = new Scanner(System.in);
 
+    //Cliente
     public void cadastroCliente(){
         System.out.print("Digite o nome: ");
         String nome = entradaTexto.nextLine();
@@ -69,6 +73,29 @@ public class ReservaUi {
 
             clienteService.alterarDadosCliente(id, novoNome, novoSobrenome, novoCpf);
         } catch (IllegalArgumentException e) {
+            System.out.println("--" + e.getMessage());
+        }
+    }
+
+    //Mesa
+
+    public void registrarMesa(){
+        System.out.print("Digite o numero da mesa: ");
+        String numeroMesa = entradaTexto.nextLine();
+
+        System.out.print("Digite a capacidade: ");
+        Integer capacidade = entradaNumero.nextInt();
+
+        mesaService.registrarMesa(numeroMesa, capacidade);
+    }
+
+    public void listarTodasAsMesas(){
+        try{
+            List<Mesa> mesas = mesaService.listarTodasAsMesas();
+            for(Mesa mesa : mesas){
+                System.out.println(mesa);
+            }
+        } catch (RuntimeException e) {
             System.out.println("--" + e.getMessage());
         }
     }

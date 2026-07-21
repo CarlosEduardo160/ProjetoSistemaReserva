@@ -1,6 +1,8 @@
 import Connection.DataBaseConnection;
 import DAO.ClienteDAO;
+import DAO.MesaDAO;
 import Service.ClienteService;
+import Service.MesaService;
 
 public class Main {
     public static void main(String[] args) {
@@ -8,9 +10,11 @@ public class Main {
 
         ClienteDAO clienteDAO = new ClienteDAO(dataBaseConnection);
         ClienteService clienteService = new ClienteService(clienteDAO);
+        MesaDAO mesaDAO = new MesaDAO(dataBaseConnection);
+        MesaService mesaService = new MesaService(mesaDAO);
 
-        ReservaUi sistema = new ReservaUi(clienteService);
-        sistema.alterarDadosCliente();
+        ReservaUi sistema = new ReservaUi(clienteService, mesaService);
+        sistema.listarTodasAsMesas();
     }
 }
 
