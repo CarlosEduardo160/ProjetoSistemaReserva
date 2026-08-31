@@ -1,18 +1,22 @@
+import DAO.ReservaDAO;
 import Entity.Cliente;
 import Entity.Mesa;
 import Service.ClienteService;
 import Service.MesaService;
+import Service.ReservaService;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class ReservaUi {
-    private ClienteService clienteService;
-    private MesaService mesaService;
+    private final ClienteService clienteService;
+    private final MesaService mesaService;
+    private final ReservaService reservaService;
 
-    public ReservaUi(ClienteService clienteService, MesaService mesaService) {
+    public ReservaUi(ClienteService clienteService, MesaService mesaService, ReservaService reservaService) {
         this.clienteService = clienteService;
         this.mesaService = mesaService;
+        this.reservaService = reservaService;
     }
 
     Scanner entradaTexto = new Scanner(System.in);
@@ -78,7 +82,6 @@ public class ReservaUi {
     }
 
     //Mesa
-
     public void registrarMesa(){
         System.out.print("Digite o numero da mesa: ");
         String numeroMesa = entradaTexto.nextLine();
@@ -98,5 +101,41 @@ public class ReservaUi {
         } catch (RuntimeException e) {
             System.out.println("--" + e.getMessage());
         }
+    }
+
+    public void buscarMesaPorId(){
+        System.out.print("Digite o ID da mesa: ");
+        Long idMesa = entradaNumero.nextLong();
+        try{
+            Mesa mesaEncontrada = mesaService.buscarMesaPorId(idMesa);
+            System.out.println(mesaEncontrada);
+        } catch (IllegalArgumentException e) {
+            System.out.println("--" + e.getMessage());
+        }
+    }
+
+    public void buscarMesaPorReserva(){
+
+    }
+
+    //Reserva
+
+    public void registrarReserva(){
+        System.out.print("Digite o ID do cliente: ");
+        Long idCliente = entradaNumero.nextLong();
+
+        System.out.print("Digite o ID da mesa: ");
+        Long idMesa = entradaNumero.nextLong();
+
+        System.out.print("Quantidade de pessoas que ocuparão a mesa: ");
+        int qntPessoa = entradaNumero.nextInt();
+
+        try {
+            reservaService.fazerReserva(idCliente, idMesa, qntPessoa);
+            System.out.println("--Sucesso papai");
+        } catch (IllegalArgumentException e) {
+            System.out.println("--" + e.getMessage());
+        }
+
     }
 }

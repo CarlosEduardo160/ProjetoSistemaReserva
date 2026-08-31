@@ -57,6 +57,29 @@ public class MesaDAO {
         return mesas;
     }
 
+    public Mesa buscarMesaPorId(Long idMesa){
+        try {
+            Connection conexao = dataBaseConnection.conexao();
+
+            String sql = "SELECT * FROM mesa WHERE id_mesa = ?";
+            PreparedStatement stmt = conexao.prepareStatement(sql);
+
+            stmt.setLong(1, idMesa);
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next()){
+                Long id_mesa = rs.getLong("id_mesa");
+                String numero_mesa = rs.getString("numero_mesa");
+                Integer capacidade = rs.getInt("capacidade");
+                Mesa mesaEncontrada = new Mesa(id_mesa, numero_mesa, capacidade);
+                return mesaEncontrada;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
     public void buscarMesaPorReserva(){
 
     }

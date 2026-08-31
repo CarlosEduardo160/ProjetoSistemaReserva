@@ -1,8 +1,10 @@
 import Connection.DataBaseConnection;
 import DAO.ClienteDAO;
 import DAO.MesaDAO;
+import DAO.ReservaDAO;
 import Service.ClienteService;
 import Service.MesaService;
+import Service.ReservaService;
 
 public class Main {
     public static void main(String[] args) {
@@ -12,36 +14,10 @@ public class Main {
         ClienteService clienteService = new ClienteService(clienteDAO);
         MesaDAO mesaDAO = new MesaDAO(dataBaseConnection);
         MesaService mesaService = new MesaService(mesaDAO);
+        ReservaDAO reservaDAO = new ReservaDAO(dataBaseConnection);
+        ReservaService reservaService = new ReservaService(reservaDAO, clienteService, mesaService);
 
-        ReservaUi sistema = new ReservaUi(clienteService, mesaService);
-        sistema.listarTodasAsMesas();
+        ReservaUi sistema = new ReservaUi(clienteService, mesaService, reservaService);
+        sistema.registrarReserva();
     }
 }
-
-
-
-
-
-
-
-
-//        Connection conexao = DataBaseConnection.getInstance().conexao();
-//
-//        List<Cliente> usuarios = new ArrayList<>();
-//        try {
-//            PreparedStatement pstm = conexao.prepareStatement("SELECT * FROM cliente");
-//            ResultSet resultSet = pstm.executeQuery();
-//            while(resultSet.next()){
-//                Long idCliente = resultSet.getLong(1);
-//                String nome = resultSet.getString("nome");
-//                String sobrenome = resultSet.getString("sobrenome");
-//                String cpf = resultSet.getString("cpf");
-//                usuarios.add(new Cliente(idCliente, nome, sobrenome, cpf));
-//            }
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        usuarios.forEach(cliente ->
-//                System.out.println(cliente.getIdCliente() + " " + cliente.getNome()));
-//    }

@@ -1,7 +1,6 @@
 package Service;
 
 import DAO.MesaDAO;
-import Entity.Cliente;
 import Entity.Mesa;
 
 import java.util.List;
@@ -25,5 +24,18 @@ public class MesaService {
             throw new RuntimeException("Nenhum cliente cadastrado");
         }
         return mesas;
+    }
+
+    public Mesa buscarMesaPorId(Long idMesa){
+        Mesa mesaEncontrada = mesaDAO.buscarMesaPorId(idMesa);
+
+        if(mesaEncontrada == null){
+            throw new IllegalArgumentException("Mesa não encontrada ou registrada.");
+        }
+        return mesaEncontrada;
+    }
+
+    public void buscarMesaPorReserva(){
+
     }
 }
