@@ -15,6 +15,12 @@ public class Reserva {
         this.dataReserva = dataReserva;
     }
 
+    public Reserva(Cliente cliente, Mesa mesa, LocalDateTime dataReserva) {
+        this.cliente = cliente;
+        this.mesa = mesa;
+        this.dataReserva = dataReserva;
+    }
+
     public Long getIdReserva() {
         return idReserva;
     }

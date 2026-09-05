@@ -23,8 +23,8 @@ public class ReservaService {
     public void fazerReserva(Long idCliente, Long idMesa, int qntPessoas, LocalDateTime horarioReserva){
         Cliente clienteEncontrado = clienteService.buscarClientePorId(idCliente);
         Mesa mesaEncontrada = mesaService.buscarMesaPorId(idMesa);
-        validarHorarios(horarioReserva);
 
+        validarHorarios(horarioReserva);
         if (mesaEncontrada.getCapacidade() - qntPessoas < 0 ) {
             throw new IllegalArgumentException("Capacidade da mesa é insuficiente");
         } else {
@@ -32,18 +32,23 @@ public class ReservaService {
         }
     }
 
-//    public List<Reserva> listarReservas(){
-//        List<Reserva> reservas = reservaDAO.listarReservas();
-//
-//        if(reservas.isEmpty()){
-//            throw new RuntimeException("Nenhuma reserva cadastrada");
-//        }
-//        return reservas;
-//    }
-//
-//    public void buscarReservaPorId(){
-//
-//    }
+    public List<Reserva> listarReservas(){
+        List<Reserva> reservas = reservaDAO.listarReservas();
+
+        if(reservas.isEmpty()){
+            throw new RuntimeException("Nenhuma reserva cadastrada");
+        }
+        return reservas;
+    }
+
+    public Reserva buscarReservaPorId(Long id){
+        Reserva reservaEncontrada = reservaDAO.buscarReservaPorId(id);
+
+        if(reservaEncontrada == null){
+            throw  new IllegalArgumentException("Reserva não encontrada ou registrada.");
+        }
+        return reservaEncontrada;
+    }
 
     public void validarHorarios(LocalDateTime horarioReserva){
         LocalTime horarioAbertura = LocalTime.of(10,0,0);

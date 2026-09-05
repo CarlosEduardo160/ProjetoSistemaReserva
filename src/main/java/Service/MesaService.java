@@ -34,8 +34,4 @@ public class MesaService {
         }
         return mesaEncontrada;
     }
-
-    public void buscarMesaPorReserva(){
-
-    }
 }

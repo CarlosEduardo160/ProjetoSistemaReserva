@@ -78,10 +78,4 @@ public class MesaDAO {
         }
         return null;
     }
-
-    public void buscarMesaPorReserva(){
-
-    }
-
-
 }

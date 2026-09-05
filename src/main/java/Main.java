@@ -14,10 +14,10 @@ public class Main {
         ClienteService clienteService = new ClienteService(clienteDAO);
         MesaDAO mesaDAO = new MesaDAO(dataBaseConnection);
         MesaService mesaService = new MesaService(mesaDAO);
-        ReservaDAO reservaDAO = new ReservaDAO(dataBaseConnection);
+        ReservaDAO reservaDAO = new ReservaDAO(dataBaseConnection, clienteDAO, mesaDAO);
         ReservaService reservaService = new ReservaService(reservaDAO, clienteService, mesaService);
 
         ReservaUi sistema = new ReservaUi(clienteService, mesaService, reservaService);
-        sistema.registrarReserva();
+        sistema.buscarReservaPorId();
     }
 }

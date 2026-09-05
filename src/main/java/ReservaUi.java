@@ -117,10 +117,6 @@ public class ReservaUi {
         }
     }
 
-    public void buscarMesaPorReserva(){
-
-    }
-
     //Reserva
 
     public void registrarReserva(){
@@ -147,14 +143,26 @@ public class ReservaUi {
         }
     }
 
-//    public void listarTodasAsReservas(){
-//        try{
-//            List<Reserva> reservas = reservaService.listarReservas();
-//            for(Reserva reserva : reservas){
-//                System.out.println(reserva);
-//            }
-//        } catch (IllegalArgumentException e) {
-//            System.out.println("--" + e.getMessage());
-//        }
-//    }
+    public void listarTodasAsReservas(){
+        try{
+            List<Reserva> reservas = reservaService.listarReservas();
+            for(Reserva reserva : reservas){
+                System.out.println(reserva);
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("--" + e.getMessage());
+        }
+    }
+
+    public void buscarReservaPorId(){
+        System.out.print("Digite o ID da reserva: ");
+        Long idReserva = entradaNumero.nextLong();
+
+        try {
+            Reserva reservaEncontrada = reservaService.buscarReservaPorId(idReserva);
+            System.out.println(reservaEncontrada);
+        } catch (Exception e) {
+            System.out.println("--" + e.getMessage());
+        }
+    }
 }
