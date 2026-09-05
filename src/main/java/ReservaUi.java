@@ -1,10 +1,13 @@
 import DAO.ReservaDAO;
 import Entity.Cliente;
 import Entity.Mesa;
+import Entity.Reserva;
 import Service.ClienteService;
 import Service.MesaService;
 import Service.ReservaService;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -121,21 +124,37 @@ public class ReservaUi {
     //Reserva
 
     public void registrarReserva(){
-        System.out.print("Digite o ID do cliente: ");
-        Long idCliente = entradaNumero.nextLong();
-
-        System.out.print("Digite o ID da mesa: ");
-        Long idMesa = entradaNumero.nextLong();
-
-        System.out.print("Quantidade de pessoas que ocuparão a mesa: ");
-        int qntPessoa = entradaNumero.nextInt();
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        LocalDateTime dataReserva;
         try {
-            reservaService.fazerReserva(idCliente, idMesa, qntPessoa);
+            System.out.print("Digite o ID do cliente: ");
+            Long idCliente = entradaNumero.nextLong();
+
+            System.out.print("Digite o ID da mesa: ");
+            Long idMesa = entradaNumero.nextLong();
+
+            System.out.print("Quantidade de pessoas que ocuparão a mesa: ");
+            int qntPessoa = entradaNumero.nextInt();
+
+            System.out.print("Digite a data da sua reserva (dd/MM/aaaa HH:mm): ");
+            String reserva = entradaTexto.nextLine();
+            dataReserva = LocalDateTime.parse(reserva, formatter);
+
+            reservaService.fazerReserva(idCliente, idMesa, qntPessoa, dataReserva);
             System.out.println("--Sucesso papai");
         } catch (IllegalArgumentException e) {
             System.out.println("--" + e.getMessage());
         }
-
     }
+
+//    public void listarTodasAsReservas(){
+//        try{
+//            List<Reserva> reservas = reservaService.listarReservas();
+//            for(Reserva reserva : reservas){
+//                System.out.println(reserva);
+//            }
+//        } catch (IllegalArgumentException e) {
+//            System.out.println("--" + e.getMessage());
+//        }
+//    }
 }

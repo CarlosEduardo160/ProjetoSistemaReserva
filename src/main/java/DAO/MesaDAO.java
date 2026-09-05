@@ -1,7 +1,6 @@
 package DAO;
 
 import Connection.DataBaseConnection;
-import Entity.Cliente;
 import Entity.Mesa;
 
 import java.sql.Connection;

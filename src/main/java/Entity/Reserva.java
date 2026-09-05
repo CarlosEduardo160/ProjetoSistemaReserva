@@ -1,20 +1,18 @@
 package Entity;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 public class Reserva {
     private Long idReserva;
     private Cliente cliente;
     private Mesa mesa;
-    private ZonedDateTime dataReserva;
+    private LocalDateTime dataReserva;
 
-    //ZonedDateTime dataReserva - removido do construtor para teste
-
-    public Reserva(Long idReserva, Cliente cliente, Mesa mesa) {
+    public Reserva(Long idReserva, Cliente cliente, Mesa mesa, LocalDateTime dataReserva) {
         this.idReserva = idReserva;
         this.cliente = cliente;
         this.mesa = mesa;
-        //this.dataReserva = dataReserva;
+        this.dataReserva = dataReserva;
     }
 
     public Long getIdReserva() {
@@ -41,11 +39,11 @@ public class Reserva {
         this.mesa = mesa;
     }
 
-    public ZonedDateTime getDataReserva() {
+    public LocalDateTime getDataReserva() {
         return dataReserva;
     }
 
-    public void setDataReserva(ZonedDateTime dataReserva) {
+    public void setDataReserva(LocalDateTime dataReserva) {
         this.dataReserva = dataReserva;
     }
 
