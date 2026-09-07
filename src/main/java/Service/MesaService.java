@@ -6,7 +6,7 @@ import Entity.Mesa;
 import java.util.List;
 
 public class MesaService {
-    private MesaDAO mesaDAO;
+    private final MesaDAO mesaDAO;
 
     public MesaService(MesaDAO mesaDAO) {
         this.mesaDAO = mesaDAO;
@@ -21,7 +21,7 @@ public class MesaService {
         List<Mesa> mesas = mesaDAO.listarTodasAsMesas();
 
         if(mesas.isEmpty()){
-            throw new RuntimeException("Nenhum cliente cadastrado");
+            throw new RuntimeException("Nenhum cliente cadastrado.");
         }
         return mesas;
     }

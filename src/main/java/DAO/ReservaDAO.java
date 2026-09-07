@@ -94,4 +94,32 @@ public class ReservaDAO {
         }
         return null;
     }
+
+    public List<Reserva> buscarReservaPorMesa(Long id){
+        List<Reserva> reservas = new ArrayList<>();
+        try {
+            Connection conexao = dataBaseConnection.conexao();
+
+            String sql = "SELECT * FROM reserva WHERE id_mesa = (?)";
+            PreparedStatement stmt = conexao.prepareStatement(sql);
+
+            stmt.setLong(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next()){
+                Long id_reserva = rs.getLong("id_reserva");
+                Long id_cliente = rs.getLong("id_cliente");
+                Long id_mesa = rs.getLong("id_mesa");
+                LocalDateTime data_reserva = rs.getObject("data_reserva", LocalDateTime.class);
+
+                Cliente cliente = clienteDAO.buscarClientePorId(id_cliente);
+                Mesa mesa = mesaDAO.buscarMesaPorId(id_mesa);
+                reservas.add(new Reserva(id_reserva, cliente, mesa, data_reserva));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
 }
