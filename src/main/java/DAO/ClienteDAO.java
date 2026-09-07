@@ -21,12 +21,11 @@ public class ClienteDAO {
         try {
             Connection conexao = dataBaseConnection.conexao();
 
-            String sql = "INSERT INTO cliente (nome, sobrenome, cpf) values (?, ?, ?)";
+            String sql = "INSERT INTO cliente (nome, sobrenome) values (?, ?, ?)";
             PreparedStatement stmt = conexao.prepareStatement(sql);
 
             stmt.setString(1, cliente.getNome());
             stmt.setString(2, cliente.getSobrenome());
-            stmt.setString(3, cliente.getCpf());
 
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -48,8 +47,7 @@ public class ClienteDAO {
                 Long id = rs.getLong("id_cliente");
                 String nome = rs.getString("nome");
                 String sobrenome = rs.getString("sobrenome");
-                String cpf = rs.getString("cpf");
-                clientes.add(new Cliente(id, nome, sobrenome, cpf));
+                clientes.add(new Cliente(id, nome, sobrenome));
             }
 
         } catch (SQLException e) {
@@ -72,8 +70,7 @@ public class ClienteDAO {
                 Long id_cliente = rs.getLong("id_cliente");
                 String nome = rs.getString("nome");
                 String sobrenome = rs.getString("sobrenome");
-                String cpf = rs.getString("cpf");
-                Cliente clienteEncontrado = new Cliente(id_cliente, nome, sobrenome, cpf);
+                Cliente clienteEncontrado = new Cliente(id_cliente, nome, sobrenome);
                 return clienteEncontrado;
             }
         } catch (SQLException e) {
@@ -82,17 +79,16 @@ public class ClienteDAO {
         return null;
     }
 
-    public void alterarDadosCliente(Long id, String novoNome, String novoSobrenome, String novoCpf){
+    public void alterarDadosCliente(Long id, String novoNome, String novoSobrenome){
         try {
             Connection conexao = dataBaseConnection.conexao();
 
-            String sql = "UPDATE cliente SET nome = ?, sobrenome = ?, cpf = ? WHERE id_cliente = ?";
+            String sql = "UPDATE cliente SET nome = ?, sobrenome = ? WHERE id_cliente = ?";
             PreparedStatement stmt = conexao.prepareStatement(sql);
 
             stmt.setString(1, novoNome);
             stmt.setString(2, novoSobrenome);
-            stmt.setString(3, novoCpf);
-            stmt.setLong(4, id);
+            stmt.setLong(3, id);
 
             stmt.executeUpdate();
         } catch (SQLException e) {

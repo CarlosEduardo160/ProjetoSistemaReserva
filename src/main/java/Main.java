@@ -18,6 +18,6 @@ public class Main {
         ReservaService reservaService = new ReservaService(reservaDAO, clienteService, mesaService);
 
         ReservaUi sistema = new ReservaUi(clienteService, mesaService, reservaService);
-        sistema.buscarReservaPorId();
+        sistema.iniciar();
     }
 }

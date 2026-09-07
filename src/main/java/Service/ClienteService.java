@@ -12,8 +12,8 @@ public class ClienteService {
         this.clienteDAO = clienteDAO;
     }
 
-    public void criarCliente(String nome, String sobrenome, String cpf){
-        Cliente novoCliente = new Cliente(nome, sobrenome, cpf);
+    public void criarCliente(String nome, String sobrenome){
+        Cliente novoCliente = new Cliente(nome, sobrenome);
         clienteDAO.cadastrarCliente(novoCliente);
     }
 
@@ -35,7 +35,7 @@ public class ClienteService {
         return clienteEncontrado;
     }
 
-    public void alterarDadosCliente(Long id, String novoNome, String novoSobrenome, String novoCpf){
-        clienteDAO.alterarDadosCliente(id, novoNome, novoSobrenome, novoCpf);
+    public void alterarDadosCliente(Long id, String novoNome, String novoSobrenome){
+        clienteDAO.alterarDadosCliente(id, novoNome, novoSobrenome);
     }
 }

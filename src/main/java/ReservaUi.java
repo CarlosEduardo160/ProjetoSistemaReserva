@@ -164,7 +164,7 @@ public class ReservaUi {
         System.out.print("Digite o cpf: ");
         String cpf = entradaTexto.nextLine();
 
-        clienteService.criarCliente(nome, sobrenome, cpf);
+        clienteService.criarCliente(nome, sobrenome);
     }
 
     public void listarTodosClientes(){
@@ -203,10 +203,7 @@ public class ReservaUi {
             System.out.print("Digite o novo sobrenome do cliente: ");
             String novoSobrenome = entradaTexto.nextLine();
 
-            System.out.print("Digite o novo cpf do cliente: ");
-            String novoCpf = entradaTexto.nextLine();
-
-            clienteService.alterarDadosCliente(id, novoNome, novoSobrenome, novoCpf);
+            clienteService.alterarDadosCliente(id, novoNome, novoSobrenome);
         } catch (IllegalArgumentException e) {
             System.out.println("--" + e.getMessage());
         }
