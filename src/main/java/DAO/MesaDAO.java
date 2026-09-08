@@ -78,4 +78,36 @@ public class MesaDAO {
         }
         return null;
     }
+
+    public void alterarDadosMesa(Long id, String novoNumero, int novaCapacidade){
+        try {
+            Connection conexao = dataBaseConnection.conexao();
+
+            String sql = "UPDATE mesa SET numero_mesa = ?, capacidade = ? WHERE id_cliente = ?";
+            PreparedStatement stmt = conexao.prepareStatement(sql);
+
+            stmt.setString(1, novoNumero);
+            stmt.setLong(2, novaCapacidade);
+            stmt.setLong(3, id);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void excluirMesa(Mesa mesa){
+        try {
+            Connection conexao = dataBaseConnection.conexao();
+
+            String sql = "DELETE FROM mesa WHERE id_mesa = ?";
+            PreparedStatement stmt = conexao.prepareStatement(sql);
+
+            stmt.setLong(1, mesa.getIdMesa());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

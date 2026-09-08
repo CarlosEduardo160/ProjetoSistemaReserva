@@ -21,7 +21,7 @@ public class ClienteService {
         List<Cliente> clientes = clienteDAO.listarTodosClientes();
 
         if(clientes.isEmpty()){
-            throw new RuntimeException("Nenhum cliente cadastrado");
+            throw new RuntimeException("Nenhum cliente cadastrado.");
         }
         return clientes;
     }
@@ -37,5 +37,9 @@ public class ClienteService {
 
     public void alterarDadosCliente(Long id, String novoNome, String novoSobrenome){
         clienteDAO.alterarDadosCliente(id, novoNome, novoSobrenome);
+    }
+
+    public void excluirCliente(Cliente cliente){
+        clienteDAO.excluirCliente(cliente);
     }
 }

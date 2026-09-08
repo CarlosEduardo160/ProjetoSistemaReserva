@@ -1,4 +1,3 @@
-import DAO.ReservaDAO;
 import Entity.Cliente;
 import Entity.Mesa;
 import Entity.Reserva;
@@ -43,6 +42,8 @@ public class ReservaUi {
                             case 1 -> cadastroCliente();
                             case 2 -> listarTodosClientes();
                             case 3 -> buscarClientePorId();
+                            case 4 -> alterarDadosCliente();
+                            case 5 -> excluirCliente();
                             case 0 ->{
                                 System.out.println("--Voltando...");
                             }
@@ -60,6 +61,8 @@ public class ReservaUi {
                             case 1 -> registrarMesa();
                             case 2 -> listarTodasAsMesas();
                             case 3 -> buscarMesaPorId();
+                            case 4 -> alterarDadosMesa();
+                            case 5 -> excluirMesa();
                             case 0 ->{
                                 System.out.println("--Voltando...");
                             }
@@ -77,6 +80,7 @@ public class ReservaUi {
                             case 1 -> registrarReserva();
                             case 2 -> listarTodasAsReservas();
                             case 3 -> buscarReservaPorId();
+                            case 4 -> excluirReserva();
                             case 0 -> {
                                 System.out.println("--Voltando...");
                             }
@@ -117,6 +121,8 @@ public class ReservaUi {
                 [1] - Cadastrar cliente
                 [2] - Listar clientes
                 [3] - Buscar cliente
+                [4] - Alterar Dados do Cliente
+                [5] - Excluir Cliente
                 [0] - Voltar
                 ==============================================
                 
@@ -131,6 +137,8 @@ public class ReservaUi {
                 [1] - Registrar Mesa
                 [2] - Listar Mesas
                 [3] - Buscar Mesa
+                [4] - Alterar Dados da Mesa
+                [5] - Excluir Mesa
                 [0] - Voltar
                 ==============================================
                 
@@ -145,6 +153,7 @@ public class ReservaUi {
                 [1] - Fazer reserva
                 [2] - Listar reservas
                 [3] - Buscar reserva
+                [4] - Excluir Reserva
                 [0] - Voltar
                 ==============================================
                 
@@ -155,16 +164,18 @@ public class ReservaUi {
 
     //Cliente
     public void cadastroCliente(){
-        System.out.print("Digite o nome: ");
-        String nome = entradaTexto.nextLine();
+        try {
+            System.out.print("Digite o nome: ");
+            String nome = entradaTexto.nextLine();
 
-        System.out.print("Digite o sobrenome: ");
-        String sobrenome = entradaTexto.nextLine();
+            System.out.print("Digite o sobrenome: ");
+            String sobrenome = entradaTexto.nextLine();
 
-        System.out.print("Digite o cpf: ");
-        String cpf = entradaTexto.nextLine();
-
-        clienteService.criarCliente(nome, sobrenome);
+            clienteService.criarCliente(nome, sobrenome);
+            System.out.println("--Cliente cadastrado com sucesso!");
+        } catch (RuntimeException e) {
+            System.out.println("--" + e );
+        }
     }
 
     public void listarTodosClientes(){
@@ -204,20 +215,39 @@ public class ReservaUi {
             String novoSobrenome = entradaTexto.nextLine();
 
             clienteService.alterarDadosCliente(id, novoNome, novoSobrenome);
+            System.out.println("--Dados alterados com sucesso!");
         } catch (IllegalArgumentException e) {
+            System.out.println("--" + e.getMessage());
+        }
+    }
+
+    public void excluirCliente(){
+        System.out.print("Digite o ID do cliente que deseja excluir: ");
+        Long id = entradaNumero.nextLong();
+
+        try {
+            Cliente clienteEncontrado = clienteService.buscarClientePorId(id);
+            clienteService.excluirCliente(clienteEncontrado);
+            System.out.println("--Mesa excluída com sucesso!");
+        } catch (RuntimeException e) {
             System.out.println("--" + e.getMessage());
         }
     }
 
     //Mesa
     public void registrarMesa(){
-        System.out.print("Digite o numero da mesa: ");
-        String numeroMesa = entradaTexto.nextLine();
+        try {
+            System.out.print("Digite o numero da mesa: ");
+            String numeroMesa = entradaTexto.nextLine();
 
-        System.out.print("Digite a capacidade: ");
-        Integer capacidade = entradaNumero.nextInt();
+            System.out.print("Digite a capacidade: ");
+            Integer capacidade = entradaNumero.nextInt();
 
-        mesaService.registrarMesa(numeroMesa, capacidade);
+            mesaService.registrarMesa(numeroMesa, capacidade);
+            System.out.println("--Mesa registrada com sucesso!");
+        } catch (RuntimeException e) {
+            System.out.println("--" + e.getMessage());
+        }
     }
 
     public void listarTodasAsMesas(){
@@ -242,6 +272,39 @@ public class ReservaUi {
         }
     }
 
+    public void alterarDadosMesa(){
+        System.out.print("Digite o ID da mesa que deseja alterar: ");
+        Long id = entradaNumero.nextLong();
+
+        try{
+            mesaService.buscarMesaPorId(id);
+
+            System.out.print("Digite o novo numero da mesa: ");
+            String novoNumero = entradaTexto.nextLine();
+
+            System.out.print("Digite o novo sobrenome do cliente: ");
+            int novaCapacidade = entradaNumero.nextInt();
+
+            mesaService.alterarDadosMesa(id, novoNumero, novaCapacidade);
+            System.out.println("--Dados alterados com sucesso!");
+        } catch (IllegalArgumentException e) {
+            System.out.println("--" + e.getMessage());
+        }
+    }
+
+    public void excluirMesa(){
+        System.out.print("Digite o ID da mesa que deseja excluir: ");
+        Long id = entradaNumero.nextLong();
+
+        try {
+            Mesa mesaEncontrada = mesaService.buscarMesaPorId(id);
+            mesaService.excluirMesa(mesaEncontrada);
+            System.out.println("--Mesa excluída com sucesso!");
+        } catch (RuntimeException e) {
+            System.out.println("--" + e.getMessage());
+        }
+    }
+
     //Reserva
 
     public void registrarReserva(){
@@ -262,7 +325,7 @@ public class ReservaUi {
             dataReserva = LocalDateTime.parse(reserva, formatter);
 
             reservaService.fazerReserva(idCliente, idMesa, qntPessoa, dataReserva);
-            System.out.println("--Sucesso papai");
+            System.out.println("--Reserva registrada com sucesso!");
         } catch (IllegalArgumentException e) {
             System.out.println("--" + e.getMessage());
         }
@@ -287,6 +350,19 @@ public class ReservaUi {
             Reserva reservaEncontrada = reservaService.buscarReservaPorId(idReserva);
             System.out.println(reservaEncontrada);
         } catch (Exception e) {
+            System.out.println("--" + e.getMessage());
+        }
+    }
+
+    public void excluirReserva(){
+        System.out.print("Digite o ID da reserva que deseja excluir: ");
+        Long id = entradaNumero.nextLong();
+
+        try {
+            Reserva reservaEncontrada = reservaService.buscarReservaPorId(id);
+            reservaService.excluirReserva(reservaEncontrada);
+            System.out.println("--Reserva excluída com sucesso!");
+        } catch (RuntimeException e) {
             System.out.println("--" + e.getMessage());
         }
     }

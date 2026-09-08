@@ -57,6 +57,10 @@ public class ReservaService {
         return reservaEncontrada;
     }
 
+    public void excluirReserva(Reserva reserva){
+        reservaDAO.excluirReserva(reserva);
+    }
+
     public void validarHorarios(LocalDateTime horarioReserva) {
         LocalTime horarioAbertura = LocalTime.of(10, 0, 0);
         LocalTime horarioFechamento = LocalTime.of(21, 0, 0);

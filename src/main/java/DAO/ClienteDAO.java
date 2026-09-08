@@ -95,4 +95,19 @@ public class ClienteDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public void excluirCliente(Cliente cliente){
+        try {
+            Connection conexao = dataBaseConnection.conexao();
+
+            String sql = "DELETE FROM cliente WHERE id_cliente = ?";
+            PreparedStatement stmt = conexao.prepareStatement(sql);
+
+            stmt.setLong(1, cliente.getIdCliente());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

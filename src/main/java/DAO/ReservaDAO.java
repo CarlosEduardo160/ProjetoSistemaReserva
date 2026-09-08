@@ -122,4 +122,19 @@ public class ReservaDAO {
         return null;
     }
 
+    public void excluirReserva(Reserva reserva){
+        try {
+            Connection conexao = dataBaseConnection.conexao();
+
+            String sql = "DELETE FROM reserva WHERE id_reserva = ?";
+            PreparedStatement stmt = conexao.prepareStatement(sql);
+
+            stmt.setLong(1, reserva.getIdReserva());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

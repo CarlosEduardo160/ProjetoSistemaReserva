@@ -21,7 +21,7 @@ public class MesaService {
         List<Mesa> mesas = mesaDAO.listarTodasAsMesas();
 
         if(mesas.isEmpty()){
-            throw new RuntimeException("Nenhum cliente cadastrado.");
+            throw new RuntimeException("Nenhuma mesa cadastrada.");
         }
         return mesas;
     }
@@ -30,8 +30,16 @@ public class MesaService {
         Mesa mesaEncontrada = mesaDAO.buscarMesaPorId(idMesa);
 
         if(mesaEncontrada == null){
-            throw new IllegalArgumentException("Mesa não encontrada ou registrada.");
+            throw new IllegalArgumentException("Mesa não encontrada ou cadastrada.");
         }
         return mesaEncontrada;
+    }
+
+    public void alterarDadosMesa(Long id, String novoNumero, int novaCapacidade){
+        mesaDAO.alterarDadosMesa(id, novoNumero, novaCapacidade);
+    }
+
+    public void excluirMesa(Mesa mesa){
+        mesaDAO.excluirMesa(mesa);
     }
 }
