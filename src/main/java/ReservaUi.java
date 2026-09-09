@@ -173,8 +173,10 @@ public class ReservaUi {
 
             clienteService.criarCliente(nome, sobrenome);
             System.out.println("--Cliente cadastrado com sucesso!");
-        } catch (RuntimeException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println("--" + e );
+        } catch (RuntimeException e){
+            System.out.println("Erro ao acessar o banco de dados: " + e);
         }
     }
 
@@ -198,6 +200,8 @@ public class ReservaUi {
             System.out.println(clienteEncontrado);
         } catch (IllegalArgumentException e) {
             System.out.println("--" + e.getMessage());
+        } catch (RuntimeException e){
+            System.out.println("Erro ao acessar o banco de dados: " + e);
         }
     }
 
@@ -218,6 +222,8 @@ public class ReservaUi {
             System.out.println("--Dados alterados com sucesso!");
         } catch (IllegalArgumentException e) {
             System.out.println("--" + e.getMessage());
+        } catch (RuntimeException e){
+            System.out.println("Erro ao acessar o banco de dados: " + e);
         }
     }
 
@@ -229,8 +235,10 @@ public class ReservaUi {
             Cliente clienteEncontrado = clienteService.buscarClientePorId(id);
             clienteService.excluirCliente(clienteEncontrado);
             System.out.println("--Mesa excluída com sucesso!");
-        } catch (RuntimeException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println("--" + e.getMessage());
+        } catch (RuntimeException e){
+            System.out.println("Erro ao acessar o banco de dados: " + e);
         }
     }
 
@@ -269,6 +277,8 @@ public class ReservaUi {
             System.out.println(mesaEncontrada);
         } catch (IllegalArgumentException e) {
             System.out.println("--" + e.getMessage());
+        } catch (RuntimeException e){
+            System.out.println("Erro ao acessar o banco de dados: " + e);
         }
     }
 
@@ -289,6 +299,8 @@ public class ReservaUi {
             System.out.println("--Dados alterados com sucesso!");
         } catch (IllegalArgumentException e) {
             System.out.println("--" + e.getMessage());
+        } catch (RuntimeException e){
+            System.out.println("Erro ao acessar o banco de dados: " + e);
         }
     }
 
@@ -300,8 +312,10 @@ public class ReservaUi {
             Mesa mesaEncontrada = mesaService.buscarMesaPorId(id);
             mesaService.excluirMesa(mesaEncontrada);
             System.out.println("--Mesa excluída com sucesso!");
-        } catch (RuntimeException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println("--" + e.getMessage());
+        } catch (RuntimeException e){
+            System.out.println("Erro ao acessar o banco de dados: " + e);
         }
     }
 
@@ -328,6 +342,8 @@ public class ReservaUi {
             System.out.println("--Reserva registrada com sucesso!");
         } catch (IllegalArgumentException e) {
             System.out.println("--" + e.getMessage());
+        } catch (RuntimeException e){
+            System.out.println("Erro ao acessar o banco de dados: " + e);
         }
     }
 
@@ -349,8 +365,10 @@ public class ReservaUi {
         try {
             Reserva reservaEncontrada = reservaService.buscarReservaPorId(idReserva);
             System.out.println(reservaEncontrada);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             System.out.println("--" + e.getMessage());
+        } catch (RuntimeException e){
+            System.out.println("Erro ao acessar o banco de dados: " + e);
         }
     }
 
@@ -362,8 +380,10 @@ public class ReservaUi {
             Reserva reservaEncontrada = reservaService.buscarReservaPorId(id);
             reservaService.excluirReserva(reservaEncontrada);
             System.out.println("--Reserva excluída com sucesso!");
-        } catch (RuntimeException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println("--" + e.getMessage());
+        } catch (RuntimeException e){
+            System.out.println("Erro ao acessar o banco de dados: " + e);
         }
     }
 }

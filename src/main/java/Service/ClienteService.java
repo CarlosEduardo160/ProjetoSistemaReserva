@@ -13,8 +13,14 @@ public class ClienteService {
     }
 
     public void criarCliente(String nome, String sobrenome){
-        Cliente novoCliente = new Cliente(nome, sobrenome);
-        clienteDAO.cadastrarCliente(novoCliente);
+        String regexNome = "^[a-zA-ZÀ-ÿ\\s]+$";
+
+        if(nome.matches(regexNome) && sobrenome.matches(regexNome)) {
+            Cliente novoCliente = new Cliente(nome, sobrenome);
+            clienteDAO.cadastrarCliente(novoCliente);
+        } else {
+            throw  new IllegalArgumentException("Nome inválido, use apenas letras.");
+        }
     }
 
     public List<Cliente> listarTodosClientes(){

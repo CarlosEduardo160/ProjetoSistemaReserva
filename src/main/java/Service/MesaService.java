@@ -13,8 +13,14 @@ public class MesaService {
     }
 
     public void registrarMesa(String numeroMesa, Integer capacidade){
-        Mesa novaMesa = new Mesa(numeroMesa, capacidade);
-        mesaDAO.registrarMesa(novaMesa);
+        String regexMesa = "^[0-9]+$";
+
+        if(numeroMesa.matches(regexMesa)) {
+            Mesa novaMesa = new Mesa(numeroMesa, capacidade);
+            mesaDAO.registrarMesa(novaMesa);
+        } else {
+            throw new IllegalArgumentException("Utilize apenas numeros.");
+        }
     }
 
     public List<Mesa> listarTodasAsMesas(){
