@@ -28,14 +28,6 @@ public class Cliente {
         return sobrenome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setSobrenome(String sobrenome) {
-        this.sobrenome = sobrenome;
-    }
-
     @Override
     public String toString() {
         return "Cliente{" +

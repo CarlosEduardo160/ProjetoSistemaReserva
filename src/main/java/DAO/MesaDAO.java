@@ -22,6 +22,7 @@ public class MesaDAO {
             Connection conexao = dataBaseConnection.conexao();
 
             String sql = "INSERT INTO mesa (numero_mesa, capacidade) values (?, ?)";
+
             PreparedStatement stmt = conexao.prepareStatement(sql);
 
             stmt.setString(1, mesa.getNumeroMesa());
@@ -39,10 +40,10 @@ public class MesaDAO {
             Connection conexao = dataBaseConnection.conexao();
 
             String sql = "SELECT * FROM mesa";
+
             PreparedStatement stmt = conexao.prepareStatement(sql);
 
             ResultSet rs = stmt.executeQuery();
-
             while (rs.next()){
                 Long id = rs.getLong("id_mesa");
                 String numero_mesa = rs.getString("numero_mesa");
@@ -61,17 +62,16 @@ public class MesaDAO {
             Connection conexao = dataBaseConnection.conexao();
 
             String sql = "SELECT * FROM mesa WHERE id_mesa = ?";
+
             PreparedStatement stmt = conexao.prepareStatement(sql);
-
             stmt.setLong(1, idMesa);
-            ResultSet rs = stmt.executeQuery();
 
+            ResultSet rs = stmt.executeQuery();
             if(rs.next()){
                 Long id_mesa = rs.getLong("id_mesa");
                 String numero_mesa = rs.getString("numero_mesa");
                 Integer capacidade = rs.getInt("capacidade");
-                Mesa mesaEncontrada = new Mesa(id_mesa, numero_mesa, capacidade);
-                return mesaEncontrada;
+                return new Mesa(id_mesa, numero_mesa, capacidade);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -83,7 +83,8 @@ public class MesaDAO {
         try {
             Connection conexao = dataBaseConnection.conexao();
 
-            String sql = "UPDATE mesa SET numero_mesa = ?, capacidade = ? WHERE id_cliente = ?";
+            String sql = "UPDATE mesa SET numero_mesa = ?, capacidade = ? WHERE id_mesa = ?";
+
             PreparedStatement stmt = conexao.prepareStatement(sql);
 
             stmt.setString(1, novoNumero);
@@ -101,6 +102,7 @@ public class MesaDAO {
             Connection conexao = dataBaseConnection.conexao();
 
             String sql = "DELETE FROM mesa WHERE id_mesa = ?";
+
             PreparedStatement stmt = conexao.prepareStatement(sql);
 
             stmt.setLong(1, mesa.getIdMesa());

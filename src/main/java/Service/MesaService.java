@@ -24,12 +24,7 @@ public class MesaService {
     }
 
     public List<Mesa> listarTodasAsMesas(){
-        List<Mesa> mesas = mesaDAO.listarTodasAsMesas();
-
-        if(mesas.isEmpty()){
-            throw new RuntimeException("Nenhuma mesa cadastrada.");
-        }
-        return mesas;
+        return mesaDAO.listarTodasAsMesas();
     }
 
     public Mesa buscarMesaPorId(Long idMesa){

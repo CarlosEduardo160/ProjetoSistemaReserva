@@ -20,24 +20,13 @@ public class Mesa {
         return idMesa;
     }
 
-    public void setIdMesa(Long idMesa) {
-        this.idMesa = idMesa;
-    }
-
     public String getNumeroMesa() {
         return numeroMesa;
     }
 
-    public void setNumeroMesa(String numeroMesa) {
-        this.numeroMesa = numeroMesa;
-    }
 
     public Integer getCapacidade() {
         return capacidade;
-    }
-
-    public void setCapacidade(Integer capacidade) {
-        this.capacidade = capacidade;
     }
 
     @Override

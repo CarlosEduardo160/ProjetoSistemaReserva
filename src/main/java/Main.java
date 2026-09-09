@@ -14,7 +14,7 @@ public class Main {
         ClienteService clienteService = new ClienteService(clienteDAO);
         MesaDAO mesaDAO = new MesaDAO(dataBaseConnection);
         MesaService mesaService = new MesaService(mesaDAO);
-        ReservaDAO reservaDAO = new ReservaDAO(dataBaseConnection, clienteDAO, mesaDAO);
+        ReservaDAO reservaDAO = new ReservaDAO(dataBaseConnection);
         ReservaService reservaService = new ReservaService(reservaDAO, clienteService, mesaService);
 
         ReservaUi sistema = new ReservaUi(clienteService, mesaService, reservaService);

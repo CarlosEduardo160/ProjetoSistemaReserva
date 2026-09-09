@@ -21,6 +21,10 @@ public class ReservaService {
     }
 
     public void fazerReserva(Long idCliente, Long idMesa, int qntPessoas, LocalDateTime horarioReserva){
+        if (qntPessoas <= 0) {
+            throw new IllegalArgumentException("A mesa deve ser ocupada por pelo menos 1 pessoa.");
+        }
+
         Cliente clienteEncontrado = clienteService.buscarClientePorId(idCliente);
         Mesa mesaEncontrada = mesaService.buscarMesaPorId(idMesa);
         List<Reserva> reservasExistentes = reservaDAO.buscarReservaPorMesa(idMesa);
@@ -39,12 +43,7 @@ public class ReservaService {
     }
 
     public List<Reserva> listarReservas(){
-        List<Reserva> reservas = reservaDAO.listarReservas();
-
-        if(reservas.isEmpty()){
-            throw new RuntimeException("Nenhuma reserva cadastrada.");
-        }
-        return reservas;
+        return reservaDAO.listarReservas();
     }
 
     public Reserva buscarReservaPorId(Long id){
@@ -61,15 +60,15 @@ public class ReservaService {
     }
 
     public void validarHorarios(LocalDateTime horarioReserva) {
-        LocalTime horarioAbertura = LocalTime.of(10, 0, 0);
-        LocalTime horarioFechamento = LocalTime.of(21, 0, 0);
+        LocalTime horarioInicioAtendimento = LocalTime.of(10, 0, 0);
+        LocalTime horarioFimAtendimento = LocalTime.of(21, 0, 0);
 
-        if (horarioReserva.toLocalTime().isBefore(horarioAbertura)) {
+        if (horarioReserva.toLocalTime().isBefore(horarioInicioAtendimento)) {
             throw new IllegalArgumentException("Fora do horário de funcionamento.");
         }
 
         LocalTime reservaConvertida = horarioReserva.plusHours(1).toLocalTime();
-        boolean verifica = reservaConvertida.isAfter(horarioFechamento);
+        boolean verifica = reservaConvertida.isAfter(horarioFimAtendimento);
         if (verifica) {
             throw new IllegalArgumentException("A reserva deve ser marcada em até 1h antes do horário de fechamento.");
         }
@@ -82,7 +81,7 @@ public class ReservaService {
             LocalDateTime inicioReservaExistente = reserva.getDataReserva();
             LocalDateTime fimReservaExistente = inicioReservaExistente.plusHours(2);
 
-            boolean semConflito = fimReservaExistente.isBefore(inicioNovaReserva) || fimNovaReserva.isBefore(inicioReservaExistente);
+            boolean semConflito = !fimReservaExistente.isAfter(inicioNovaReserva) || !fimNovaReserva.isAfter(inicioReservaExistente);
 
             if(!semConflito){
                 return false;

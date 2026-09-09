@@ -21,22 +21,24 @@ public class ReservaUi {
         this.reservaService = reservaService;
     }
 
-    Scanner entradaTexto = new Scanner(System.in);
-    Scanner entradaNumero = new Scanner(System.in);
+    Scanner entrada = new Scanner(System.in);
+    //Scanner entradaNumero = new Scanner(System.in);
 
     public void iniciar(){
         boolean rodando = true;
 
         while(rodando){
             menuPrincipal();
-            int opcao = entradaNumero.nextInt();
+            int opcao = entrada.nextInt();
+            entrada.nextLine();
 
             switch (opcao) {
                 case 1:
                     int opcaoCliente;
                     do {
                         menuClientes();
-                        opcaoCliente = entradaNumero.nextInt();
+                        opcaoCliente = entrada.nextInt();
+                        entrada.nextLine();
 
                         switch (opcaoCliente) {
                             case 1 -> cadastroCliente();
@@ -56,7 +58,8 @@ public class ReservaUi {
                     int opcaoMesa;
                     do {
                         menuMesas();
-                        opcaoMesa    = entradaNumero.nextInt();
+                        opcaoMesa = entrada.nextInt();
+                        entrada.nextLine();
                         switch (opcaoMesa){
                             case 1 -> registrarMesa();
                             case 2 -> listarTodasAsMesas();
@@ -68,14 +71,15 @@ public class ReservaUi {
                             }
                             default -> System.out.println("--Opção inválida.");
                         }
-                    } while(opcaoMesa    != 0);
+                    } while(opcaoMesa != 0);
                     break;
                 }
                 case 3: {
                     int opcaoReserva;
                     do{
                         menuReservas();
-                        opcaoReserva = entradaNumero.nextInt();
+                        opcaoReserva = entrada.nextInt();
+                        entrada.nextLine();
                         switch (opcaoReserva){
                             case 1 -> registrarReserva();
                             case 2 -> listarTodasAsReservas();
@@ -166,10 +170,10 @@ public class ReservaUi {
     public void cadastroCliente(){
         try {
             System.out.print("Digite o nome: ");
-            String nome = entradaTexto.nextLine();
+            String nome = entrada.nextLine();
 
             System.out.print("Digite o sobrenome: ");
-            String sobrenome = entradaTexto.nextLine();
+            String sobrenome = entrada.nextLine();
 
             clienteService.criarCliente(nome, sobrenome);
             System.out.println("--Cliente cadastrado com sucesso!");
@@ -181,19 +185,26 @@ public class ReservaUi {
     }
 
     public void listarTodosClientes(){
-        try{
+        try {
             List<Cliente> clientes = clienteService.listarTodosClientes();
+            if(clientes.isEmpty()){
+                System.out.println("Nenhum cliente encontrado.");
+                return;
+            }
+
             for(Cliente cliente : clientes){
                 System.out.println(cliente);
             }
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             System.out.println("--" + e.getMessage());
         }
+
     }
 
     public void buscarClientePorId(){
         System.out.print("Digite o ID do cliente: ");
-        Long id = entradaNumero.nextLong();
+        Long id = entrada.nextLong();
+        entrada.nextLine();
 
         try{
             Cliente clienteEncontrado = clienteService.buscarClientePorId(id);
@@ -207,16 +218,17 @@ public class ReservaUi {
 
     public void alterarDadosCliente(){
         System.out.print("Digite o ID do cliente que deseja atualizar: ");
-        Long id = entradaNumero.nextLong();
+        Long id = entrada.nextLong();
+        entrada.nextLine();
 
         try{
             clienteService.buscarClientePorId(id);
 
             System.out.print("Digite o novo nome do cliente: ");
-            String novoNome = entradaTexto.nextLine();
+            String novoNome = entrada.nextLine();
 
             System.out.print("Digite o novo sobrenome do cliente: ");
-            String novoSobrenome = entradaTexto.nextLine();
+            String novoSobrenome = entrada.nextLine();
 
             clienteService.alterarDadosCliente(id, novoNome, novoSobrenome);
             System.out.println("--Dados alterados com sucesso!");
@@ -229,12 +241,13 @@ public class ReservaUi {
 
     public void excluirCliente(){
         System.out.print("Digite o ID do cliente que deseja excluir: ");
-        Long id = entradaNumero.nextLong();
+        Long id = entrada.nextLong();
+        entrada.nextLine();
 
         try {
             Cliente clienteEncontrado = clienteService.buscarClientePorId(id);
             clienteService.excluirCliente(clienteEncontrado);
-            System.out.println("--Mesa excluída com sucesso!");
+            System.out.println("--Cliente excluído com sucesso!");
         } catch (IllegalArgumentException e) {
             System.out.println("--" + e.getMessage());
         } catch (RuntimeException e){
@@ -246,10 +259,11 @@ public class ReservaUi {
     public void registrarMesa(){
         try {
             System.out.print("Digite o numero da mesa: ");
-            String numeroMesa = entradaTexto.nextLine();
+            String numeroMesa = entrada.nextLine();
 
             System.out.print("Digite a capacidade: ");
-            Integer capacidade = entradaNumero.nextInt();
+            Integer capacidade = entrada.nextInt();
+            entrada.nextLine();
 
             mesaService.registrarMesa(numeroMesa, capacidade);
             System.out.println("--Mesa registrada com sucesso!");
@@ -259,19 +273,25 @@ public class ReservaUi {
     }
 
     public void listarTodasAsMesas(){
-        try{
+        try {
             List<Mesa> mesas = mesaService.listarTodasAsMesas();
+            if (mesas.isEmpty()){
+                System.out.println("Nenhuma mesa encontrada.");
+                return;
+            }
+
             for(Mesa mesa : mesas){
                 System.out.println(mesa);
             }
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             System.out.println("--" + e.getMessage());
         }
     }
 
     public void buscarMesaPorId(){
         System.out.print("Digite o ID da mesa: ");
-        Long idMesa = entradaNumero.nextLong();
+        Long idMesa = entrada.nextLong();
+        entrada.nextLine();
         try{
             Mesa mesaEncontrada = mesaService.buscarMesaPorId(idMesa);
             System.out.println(mesaEncontrada);
@@ -284,16 +304,18 @@ public class ReservaUi {
 
     public void alterarDadosMesa(){
         System.out.print("Digite o ID da mesa que deseja alterar: ");
-        Long id = entradaNumero.nextLong();
+        Long id = entrada.nextLong();
+        entrada.nextLine();
 
         try{
             mesaService.buscarMesaPorId(id);
 
             System.out.print("Digite o novo numero da mesa: ");
-            String novoNumero = entradaTexto.nextLine();
+            String novoNumero = entrada.nextLine();
 
-            System.out.print("Digite o novo sobrenome do cliente: ");
-            int novaCapacidade = entradaNumero.nextInt();
+            System.out.print("Digite a nova capacidade da mesa: ");
+            int novaCapacidade = entrada.nextInt();
+            entrada.nextLine();
 
             mesaService.alterarDadosMesa(id, novoNumero, novaCapacidade);
             System.out.println("--Dados alterados com sucesso!");
@@ -306,7 +328,8 @@ public class ReservaUi {
 
     public void excluirMesa(){
         System.out.print("Digite o ID da mesa que deseja excluir: ");
-        Long id = entradaNumero.nextLong();
+        Long id = entrada.nextLong();
+        entrada.nextLine();
 
         try {
             Mesa mesaEncontrada = mesaService.buscarMesaPorId(id);
@@ -326,16 +349,19 @@ public class ReservaUi {
         LocalDateTime dataReserva;
         try {
             System.out.print("Digite o ID do cliente: ");
-            Long idCliente = entradaNumero.nextLong();
+            Long idCliente = entrada.nextLong();
+            entrada.nextLine();
 
             System.out.print("Digite o ID da mesa: ");
-            Long idMesa = entradaNumero.nextLong();
+            Long idMesa = entrada.nextLong();
+            entrada.nextLine();
 
             System.out.print("Quantidade de pessoas que ocuparão a mesa: ");
-            int qntPessoa = entradaNumero.nextInt();
+            int qntPessoa = entrada.nextInt();
+            entrada.nextLine();
 
             System.out.print("Digite a data da sua reserva (dd/MM/aaaa HH:mm): ");
-            String reserva = entradaTexto.nextLine();
+            String reserva = entrada.nextLine();
             dataReserva = LocalDateTime.parse(reserva, formatter);
 
             reservaService.fazerReserva(idCliente, idMesa, qntPessoa, dataReserva);
@@ -348,19 +374,25 @@ public class ReservaUi {
     }
 
     public void listarTodasAsReservas(){
-        try{
+        try {
             List<Reserva> reservas = reservaService.listarReservas();
+            if (reservas.isEmpty()){
+                System.out.println("Nenhuma reserva encontrada.");
+                return;
+            }
+
             for(Reserva reserva : reservas){
                 System.out.println(reserva);
             }
-        } catch (IllegalArgumentException e) {
+        } catch (RuntimeException e) {
             System.out.println("--" + e.getMessage());
         }
     }
 
     public void buscarReservaPorId(){
         System.out.print("Digite o ID da reserva: ");
-        Long idReserva = entradaNumero.nextLong();
+        Long idReserva = entrada.nextLong();
+        entrada.nextLine();
 
         try {
             Reserva reservaEncontrada = reservaService.buscarReservaPorId(idReserva);
@@ -374,7 +406,8 @@ public class ReservaUi {
 
     public void excluirReserva(){
         System.out.print("Digite o ID da reserva que deseja excluir: ");
-        Long id = entradaNumero.nextLong();
+        Long id = entrada.nextLong();
+        entrada.nextLine();
 
         try {
             Reserva reservaEncontrada = reservaService.buscarReservaPorId(id);

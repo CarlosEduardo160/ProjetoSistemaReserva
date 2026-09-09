@@ -15,13 +15,9 @@ import java.util.List;
 
 public class ReservaDAO {
     private final DataBaseConnection dataBaseConnection;
-    private final ClienteDAO clienteDAO;
-    private final MesaDAO mesaDAO;
 
-    public ReservaDAO(DataBaseConnection dataBaseConnection, ClienteDAO clienteDAO, MesaDAO mesaDAO) {
+    public ReservaDAO(DataBaseConnection dataBaseConnection) {
         this.dataBaseConnection = dataBaseConnection;
-        this.clienteDAO = clienteDAO;
-        this.mesaDAO = mesaDAO;
     }
 
     public void fazerReserva(Cliente cliente, Mesa mesa, LocalDateTime horarioReserva) {
@@ -47,47 +43,64 @@ public class ReservaDAO {
         try {
             Connection conexao = dataBaseConnection.conexao();
 
-            String sql = "SELECT * FROM cliente c LEFT JOIN reserva r ON c.id_cliente = r.id_reserva ";
+            String sql = "SELECT r.id_reserva, r.data_reserva, c.id_cliente, c.nome, c.sobrenome, m.id_mesa, m.numero_mesa, m.capacidade " +
+                    "FROM reserva r " +
+                    "JOIN cliente c ON r.id_cliente = c.id_cliente " +
+                    "JOIN mesa m ON r.id_mesa = m.id_mesa";
+
             PreparedStatement stmt = conexao.prepareStatement(sql);
 
             ResultSet rs = stmt.executeQuery();
-
             while(rs.next()){
-                Long id = rs.getLong("id_reserva");
-                Long id_cliente = rs.getLong("id_cliente");
-                Long id_mesa = rs.getLong("id_mesa");
+                Long id_reserva = rs.getLong("id_reserva");
                 LocalDateTime data_reserva = rs.getObject("data_reserva", LocalDateTime.class);
 
-                Cliente cliente = clienteDAO.buscarClientePorId(id_cliente);
-                Mesa mesa = mesaDAO.buscarMesaPorId(id_mesa);
-                reservas.add(new Reserva(id, cliente, mesa, data_reserva));
+                Long id_cliente = rs.getLong("id_cliente");
+                String nome = rs.getString("nome");
+                String sobrenome = rs.getString("sobrenome");
+
+                Long id_mesa = rs.getLong("id_mesa");
+                String numero_mesa = rs.getString("numero_mesa");
+                Integer capacidade = rs.getInt("capacidade");
+
+                Cliente cliente  = new Cliente(id_cliente, nome, sobrenome);
+                Mesa mesa  = new Mesa(id_mesa, numero_mesa, capacidade);
+                reservas.add(new Reserva(id_reserva, cliente, mesa, data_reserva));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return  reservas;
+        return reservas;
     }
 
     public Reserva buscarReservaPorId(Long id){
         try {
             Connection conexao = dataBaseConnection.conexao();
 
-            String sql = "SELECT * FROM reserva WHERE id_reserva = (?)";
+            String sql = "SELECT r.id_reserva, r.data_reserva, c.id_cliente, c.nome, c.sobrenome, m.id_mesa, m.numero_mesa, m.capacidade " +
+                    "FROM reserva r " +
+                    "JOIN cliente c ON r.id_cliente = c.id_cliente " +
+                    "JOIN mesa m ON r.id_mesa = m.id_mesa WHERE id_reserva = ?";
+
             PreparedStatement stmt = conexao.prepareStatement(sql);
-
             stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
 
+            ResultSet rs = stmt.executeQuery();
             if(rs.next()){
                 Long id_reserva = rs.getLong("id_reserva");
-                Long id_cliente = rs.getLong("id_cliente");
-                Long id_mesa = rs.getLong("id_mesa");
                 LocalDateTime data_reserva = rs.getObject("data_reserva", LocalDateTime.class);
 
-                Cliente cliente = clienteDAO.buscarClientePorId(id_cliente);
-                Mesa mesa = mesaDAO.buscarMesaPorId(id_mesa);
-                Reserva reservaEncontrada = new Reserva(id_reserva, cliente, mesa, data_reserva);
-                return reservaEncontrada;
+                Long id_cliente = rs.getLong("id_cliente");
+                String nome = rs.getString("nome");
+                String sobrenome = rs.getString("sobrenome");
+
+                Long id_mesa = rs.getLong("id_mesa");
+                String numero_mesa = rs.getString("numero_mesa");
+                Integer capacidade = rs.getInt("capacidade");
+
+                Cliente cliente  = new Cliente(id_cliente, nome, sobrenome);
+                Mesa mesa  = new Mesa(id_mesa, numero_mesa, capacidade);
+                return new Reserva(id_reserva, cliente, mesa, data_reserva);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -100,26 +113,35 @@ public class ReservaDAO {
         try {
             Connection conexao = dataBaseConnection.conexao();
 
-            String sql = "SELECT * FROM reserva WHERE id_mesa = (?)";
+            String sql = "SELECT r.id_reserva, r.data_reserva, c.id_cliente, c.nome, c.sobrenome, m.id_mesa, m.numero_mesa, m.capacidade " +
+                    "FROM reserva r " +
+                    "JOIN cliente c ON r.id_cliente = c.id_cliente " +
+                    "JOIN mesa m ON r.id_mesa = m.id_mesa WHERE r.id_mesa = ?";
+
             PreparedStatement stmt = conexao.prepareStatement(sql);
-
             stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
 
-            if(rs.next()){
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
                 Long id_reserva = rs.getLong("id_reserva");
-                Long id_cliente = rs.getLong("id_cliente");
-                Long id_mesa = rs.getLong("id_mesa");
                 LocalDateTime data_reserva = rs.getObject("data_reserva", LocalDateTime.class);
 
-                Cliente cliente = clienteDAO.buscarClientePorId(id_cliente);
-                Mesa mesa = mesaDAO.buscarMesaPorId(id_mesa);
+                Long id_cliente = rs.getLong("id_cliente");
+                String nome = rs.getString("nome");
+                String sobrenome = rs.getString("sobrenome");
+
+                Long id_mesa = rs.getLong("id_mesa");
+                String numero_mesa = rs.getString("numero_mesa");
+                Integer capacidade = rs.getInt("capacidade");
+
+                Cliente cliente  = new Cliente(id_cliente, nome, sobrenome);
+                Mesa mesa  = new Mesa(id_mesa, numero_mesa, capacidade);
                 reservas.add(new Reserva(id_reserva, cliente, mesa, data_reserva));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null;
+        return reservas;
     }
 
     public void excluirReserva(Reserva reserva){
@@ -136,5 +158,4 @@ public class ReservaDAO {
             throw new RuntimeException(e);
         }
     }
-
 }

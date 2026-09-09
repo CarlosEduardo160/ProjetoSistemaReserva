@@ -6,7 +6,7 @@ import Entity.Cliente;
 import java.util.List;
 
 public class ClienteService {
-    private ClienteDAO clienteDAO;
+    private final ClienteDAO clienteDAO;
 
     public ClienteService(ClienteDAO clienteDAO) {
         this.clienteDAO = clienteDAO;
@@ -24,12 +24,7 @@ public class ClienteService {
     }
 
     public List<Cliente> listarTodosClientes(){
-        List<Cliente> clientes = clienteDAO.listarTodosClientes();
-
-        if(clientes.isEmpty()){
-            throw new RuntimeException("Nenhum cliente cadastrado.");
-        }
-        return clientes;
+        return clienteDAO.listarTodosClientes();
     }
 
     public Cliente buscarClientePorId(Long id){
@@ -42,7 +37,13 @@ public class ClienteService {
     }
 
     public void alterarDadosCliente(Long id, String novoNome, String novoSobrenome){
-        clienteDAO.alterarDadosCliente(id, novoNome, novoSobrenome);
+        String regexNome = "^[a-zA-ZÀ-ÿ\\s]+$";
+
+        if(novoNome.matches(regexNome) && novoSobrenome.matches(regexNome)){
+            clienteDAO.alterarDadosCliente(id, novoNome, novoSobrenome);
+        } else {
+            throw new IllegalArgumentException("Nome inválido, use apenas letras.");
+        }
     }
 
     public void excluirCliente(Cliente cliente){

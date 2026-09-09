@@ -21,7 +21,8 @@ public class ClienteDAO {
         try {
             Connection conexao = dataBaseConnection.conexao();
 
-            String sql = "INSERT INTO cliente (nome, sobrenome) values (?, ?, ?)";
+            String sql = "INSERT INTO cliente (nome, sobrenome) values (?, ?)";
+
             PreparedStatement stmt = conexao.prepareStatement(sql);
 
             stmt.setString(1, cliente.getNome());
@@ -39,10 +40,10 @@ public class ClienteDAO {
             Connection conexao = dataBaseConnection.conexao();
 
             String sql = "SELECT * FROM cliente";
+
             PreparedStatement stmt = conexao.prepareStatement(sql);
 
             ResultSet rs = stmt.executeQuery();
-
             while (rs.next()){
                 Long id = rs.getLong("id_cliente");
                 String nome = rs.getString("nome");
@@ -61,17 +62,16 @@ public class ClienteDAO {
             Connection conexao = dataBaseConnection.conexao();
 
             String sql = "SELECT * FROM cliente WHERE id_cliente = ?";
+
             PreparedStatement stmt = conexao.prepareStatement(sql);
-
             stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
 
+            ResultSet rs = stmt.executeQuery();
             if(rs.next()){
                 Long id_cliente = rs.getLong("id_cliente");
                 String nome = rs.getString("nome");
                 String sobrenome = rs.getString("sobrenome");
-                Cliente clienteEncontrado = new Cliente(id_cliente, nome, sobrenome);
-                return clienteEncontrado;
+                return new Cliente(id_cliente, nome, sobrenome);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -84,6 +84,7 @@ public class ClienteDAO {
             Connection conexao = dataBaseConnection.conexao();
 
             String sql = "UPDATE cliente SET nome = ?, sobrenome = ? WHERE id_cliente = ?";
+
             PreparedStatement stmt = conexao.prepareStatement(sql);
 
             stmt.setString(1, novoNome);
